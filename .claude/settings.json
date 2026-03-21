@@ -1,0 +1,66 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:better-auth.com)",
+      "WebFetch(domain:orm.drizzle.team)",
+      "WebFetch(domain:zod.dev)",
+      "WebFetch(domain:trpc.io)",
+      "WebFetch(domain:ui.shadcn.com)",
+      "WebFetch(domain:nextjs.org)",
+      "WebFetch(domain:turbo.build)",
+      "WebFetch(domain:fumadocs.vercel.app)",
+      "WebFetch(domain:commander.js.org)",
+      "WebSearch",
+      "Bash(pnpm dev*)",
+      "Bash(pnpm build*)",
+      "Bash(pnpm lint*)",
+      "Bash(pnpm typecheck*)",
+      "Bash(pnpm test*)",
+      "Bash(pnpm db:*)",
+      "Bash(pnpm dlx *)",
+      "Bash(pnpm install*)",
+      "Bash(pnpm add *)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log *)",
+      "Bash(git log --*)",
+      "Bash(git branch*)",
+      "Bash(git checkout -b *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(ls *)",
+      "Bash(ls)",
+      "Agent(Explore)",
+      "Agent(Plan)",
+      "Agent(general-purpose)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/dangerous-actions-blocker.sh"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/security-check.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/auto-format.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

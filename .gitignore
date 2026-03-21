@@ -1,0 +1,27 @@
+# dependencies
+node_modules/
+
+# turbo
+.turbo/
+
+# build outputs
+dist/
+
+# wrangler
+.wrangler/
+.dev.vars
+
+# env files
+.env
+.env.*
+!.env.example
+
+# os
+.DS_Store
+
+# ide
+.idea/
+
+# debug
+npm-debug.log*
+pnpm-debug.log*

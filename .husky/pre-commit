@@ -1,0 +1,20 @@
+pnpm dlx lint-staged
+
+YELLOW='\033[0;33m'
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+RESET='\033[0m'
+HIDECURSOR='\033[?25l'
+SHOWCURSOR='\033[?25h'
+ARROW="❯"
+CHECK="✔"
+CROSS="✖"
+
+printf "${HIDECURSOR}${YELLOW}${ARROW}${RESET} Running type checks...\r"
+if pnpm typecheck > /dev/null 2>&1; then
+  printf "${GREEN}${CHECK}${RESET} Running type checks...${SHOWCURSOR}\n"
+else
+  printf "${RED}${CROSS}${RESET} Running type checks...${SHOWCURSOR}\n"
+  pnpm typecheck
+  exit 1
+fi
