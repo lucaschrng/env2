@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Whenever something is changed, decided, added, or removed that affects the architecture, conventions, commands, or structure of this project — update this file. Do not wait to be asked. Proactively keep CLAUDE.md in sync with the actual state of the project.
 
+Also keep `README.md` (GitHub) and `packages/cli/README.md` (npm) up to date when commands, flags, architecture, or behavior changes. Same principle — don't wait to be asked.
+
 ## What is env2
 
 env2 is an open-source CLI tool for ephemeral encrypted `.env` file sharing. One command to share, one command to receive. Zero-knowledge by design — the server never sees your secrets.
