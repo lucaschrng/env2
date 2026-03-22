@@ -24,12 +24,12 @@ env2 is an open-source CLI tool for ephemeral encrypted `.env` file sharing. One
 ```
 apps/
   docs/       # Fumadocs — documentation site (docs.env2.dev) [not yet created]
-  worker/     # Cloudflare Workers — managed server (env2.dev/s/:id) [not yet created]
-  server/     # Node/Hono/SQLite — self-hostable Docker image [not yet created]
+  worker/     # Cloudflare Workers — managed server
+  server/     # Node/Hono/SQLite — self-hostable Docker image
 packages/
-  cli/        # @griv/env2 — published to npm, bin: "env2" [not yet created]
+  cli/        # @griv/env2 — published to npm, bin: "env2"
   crypto/     # AES-256-GCM wrapper — Node built-in crypto, zero deps
-  types/      # shared TypeScript types — manifest schema, API contract [not yet created]
+  types/      # shared TypeScript types — manifest schema, API contract
 ```
 
 ## Commands
@@ -40,6 +40,7 @@ pnpm build           # build all packages and apps
 pnpm lint            # lint all packages and apps
 pnpm lint:fix        # auto-fix lint errors
 pnpm typecheck       # type-check all packages and apps
+docker compose up    # run self-hosted server locally
 ```
 
 ## Architecture

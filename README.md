@@ -56,16 +56,29 @@ Fetches, decrypts, and writes files. Per-var selection and smart merge with exis
 The default server runs on Cloudflare Workers. You can self-host with Docker:
 
 ```bash
-env2 config set host https://your-server.com
+docker run -d -p 3000:3000 -v env2-data:/data ghcr.io/lucaschrng/env2-server
 ```
 
-Self-hostable Docker image coming soon.
+Or with Docker Compose:
+
+```bash
+git clone https://github.com/lucaschrng/env2.git
+cd env2
+docker compose up -d
+```
+
+Then point the CLI to your server:
+
+```bash
+env2 config set host http://localhost:3000
+```
 
 ## Monorepo structure
 
 ```
 apps/
-  worker/       # Cloudflare Workers — blob store API
+  worker/       # Cloudflare Workers — managed server
+  server/       # Node/Hono/SQLite — self-hostable Docker image
 packages/
   cli/          # @griv/env2 — the CLI tool
   crypto/       # AES-256-GCM encryption utilities
@@ -80,12 +93,15 @@ cd env2
 pnpm install
 pnpm build
 
-# Start the worker locally
+# Start the worker locally (Cloudflare Workers)
 pnpm --filter @env2/worker dev
+
+# Or start the self-hosted server locally
+pnpm --filter @env2/server dev
 
 # Test the CLI (pointing to local server)
 cd /your/project
-node /path/to/env2/packages/cli/dist/index.js share --host http://localhost:8787
+node /path/to/env2/packages/cli/dist/index.js share --host http://localhost:3000
 ```
 
 ## Contributing

@@ -89,6 +89,8 @@ env2 config get host                           # show current
 env2 config reset                              # back to default
 ```
 
+Self-host with Docker: `docker run -d -p 3000:3000 ghcr.io/lucaschrng/env2-server`
+
 ## Security
 
 Secrets are encrypted with AES-256-GCM before leaving your machine. The encryption key is embedded in the URL fragment (`#...`) which is never sent to the server per the HTTP spec. Shares self-destruct after download.

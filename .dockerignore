@@ -1,0 +1,10 @@
+.git
+.turbo
+.wrangler
+node_modules
+**/node_modules
+**/dist
+apps/docs
+apps/worker
+packages/cli
+packages/crypto
