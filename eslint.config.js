@@ -18,6 +18,7 @@ export default defineConfig(
       '**/dist/**',
       '**/.next/**',
       '**/.turbo/**',
+      '**/.wrangler/**',
     ],
   },
 );

@@ -1,0 +1,11 @@
+{
+	"name": "env2-worker",
+	"main": "src/index.ts",
+	"compatibility_date": "2025-01-01",
+	"kv_namespaces": [
+		{
+			"binding": "SHARES",
+			"id": "9fb391f5efd14d748371c5389419ef7a"
+		}
+	]
+}
