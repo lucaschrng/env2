@@ -10,11 +10,13 @@ export interface ShareRow {
 }
 
 export function createDb(dataDir: string): Database.Database {
-  if (!existsSync(dataDir)) {
+  const isMemory = dataDir === ':memory:';
+
+  if (!isMemory && !existsSync(dataDir)) {
     mkdirSync(dataDir, { recursive: true });
   }
 
-  const db = new Database(join(dataDir, 'env2.db'));
+  const db = new Database(isMemory ? ':memory:' : join(dataDir, 'env2.db'));
 
   db.pragma('journal_mode = WAL');
 

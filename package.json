@@ -9,10 +9,12 @@
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
     "prepare": "husky"
   },
   "lint-staged": {
     "packages/**/*.{ts,tsx,js,jsx}": "eslint",
+    "apps/**/*.{ts,tsx,js,jsx}": "eslint",
     "*.{ts,tsx,js,jsx,mjs}": "eslint"
   },
   "devDependencies": {
@@ -23,6 +25,7 @@
     "lint-staged": "^16.4.0",
     "turbo": "^2",
     "typescript": "^5",
-    "typescript-eslint": "^8.57.1"
+    "typescript-eslint": "^8.57.1",
+    "vitest": "^4.1.0"
   }
 }
