@@ -1,0 +1,22 @@
+import { initOpenNextCloudflareForDev } from '@opennextjs/cloudflare';
+import { createMDX } from 'fumadocs-mdx/next';
+
+initOpenNextCloudflareForDev();
+
+const withMDX = createMDX();
+
+/** @type {import('next').NextConfig} */
+const config = {
+  reactStrictMode: true,
+  async rewrites() {
+    return [
+      {
+        destination: '/llms.mdx/docs/:path*',
+        source: '/docs/:path*.mdx',
+      },
+    ];
+  },
+  serverExternalPackages: ['@takumi-rs/image-response'],
+};
+
+export default withMDX(config);

@@ -1,0 +1,68 @@
+---
+title: Self-Hosting
+description: Run your own env2 server with Docker.
+icon: Server
+---
+
+The default server runs on Cloudflare Workers. You can self-host with Docker for full control over your data.
+
+<Steps>
+  <Step>
+    ### Run the server
+
+    <Tabs items={['Docker', 'Docker Compose']}>
+      <Tab value="Docker">
+        ```bash
+        docker run -d -p 3000:3000 -v env2-data:/data ghcr.io/lucaschrng/env2-server
+        ```
+      </Tab>
+      <Tab value="Docker Compose">
+        ```bash
+        git clone https://github.com/lucaschrng/env2.git
+        cd env2
+        docker compose up -d
+        ```
+      </Tab>
+    </Tabs>
+  </Step>
+  <Step>
+    ### Point the CLI to your server
+
+    ```bash
+    env2 config set host http://localhost:3000
+    ```
+
+    All subsequent `env2 share` and `env2 receive` commands will use your server.
+  </Step>
+</Steps>
+
+<Callout type="info" title="Per-command override">
+  You can also pass `--host` on any command without changing the global config: `env2 share --host http://localhost:3000`
+</Callout>
+
+## Configuration
+
+The server accepts these environment variables:
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `PORT` | HTTP port | `3000` |
+| `DATA_DIR` | SQLite data directory | `/data` |
+
+## API
+
+The self-hosted server exposes the same API as the managed Cloudflare Worker:
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/health` | `GET` | Health check |
+| `/s` | `POST` | Create a share (ciphertext, ttl, maxDownloads) |
+| `/s/:id` | `GET` | Fetch a share (auto-deletes after max downloads) |
+
+## Limits
+
+| Property | Value |
+|----------|-------|
+| Maximum TTL | 1 hour (3600 seconds) |
+| Maximum downloads per share | 10 |
+| Cleanup interval | Every 60 seconds |

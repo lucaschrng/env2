@@ -1,0 +1,70 @@
+---
+title: CLI Reference
+description: All env2 commands and flags.
+icon: Terminal
+---
+
+## `env2 share`
+
+Scan for `.env` files, encrypt, and upload.
+
+```bash
+env2 share                      # interactive picker
+env2 share apps/web/            # specific directory
+env2 share .env apps/web/.env   # specific files
+```
+
+### Flags
+
+| Flag | Description | Default |
+|------|-------------|---------|
+| `--ttl <duration>` | Expiry (e.g. `5m`, `15m`, `1h`) | `15m` |
+| `--downloads <n>` | Max downloads | `1` |
+| `--root <path>` | Working directory | `.` |
+| `--host <url>` | Custom server URL | configured host |
+| `--no-interactive` | Skip pickers, share all | `false` |
+
+<Callout type="info" title="CI / scripts">
+  Use `--no-interactive` to skip all prompts. Combine with specific file paths for deterministic behavior in automation: `env2 share .env --no-interactive --ttl 5m`
+</Callout>
+
+## `env2 receive <url>`
+
+Fetch, decrypt, and write `.env` files.
+
+```bash
+env2 receive https://env2.dev/s/abc123#key
+```
+
+### Flags
+
+| Flag | Description | Default |
+|------|-------------|---------|
+| `--root <path>` | Write relative to this dir | `.` |
+| `--dry-run` | Preview without writing | `false` |
+| `--force` | Skip confirmation prompts | `false` |
+| `--overwrite` | Replace files instead of merging | `false` |
+| `--no-interactive` | Accept all vars | `false` |
+| `--stdout` | Print to stdout | `false` |
+
+### Merge behavior
+
+By default, `env2 receive` merges with existing `.env` files:
+
+- Existing vars you didn't select are **preserved**
+- Selected vars that already exist are **updated in-place**
+- New vars are **appended** at the end
+
+<Callout type="info">
+  Use `--overwrite` to replace files entirely instead of merging. Use `--dry-run` to preview what would be written without making any changes.
+</Callout>
+
+## `env2 config`
+
+Manage CLI configuration stored at `~/.env2/config.json`.
+
+```bash
+env2 config set host https://your-server.com  # self-hosted server
+env2 config get host                           # show current
+env2 config reset                              # back to default
+```

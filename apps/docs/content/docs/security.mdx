@@ -1,0 +1,79 @@
+---
+title: Security
+description: How env2 keeps your secrets safe.
+icon: Shield
+---
+
+env2 is zero-knowledge by design. The server never sees your secrets.
+
+## Encryption
+
+All `.env` files are encrypted using **AES-256-GCM** — a symmetric encryption algorithm from Node.js built-in `crypto` module (zero dependencies).
+
+Each share generates:
+- A random **32-byte encryption key**
+- A random **12-byte initialization vector** (IV)
+- A **16-byte authentication tag** for integrity verification
+
+## URL fragment design
+
+When you share, the URL contains both the share ID and the encryption key:
+
+`https://env2.dev/s/abc123#aB3xK9mP...`
+
+The `#` character is the boundary. Everything after it is the **URL fragment** — per the HTTP spec ([RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986#section-3.5)), fragments are never sent to the server.
+
+<Cards>
+  <Card title="What the server sees">
+    `GET /s/abc123`
+
+    Just the share ID. The server fetches the encrypted blob and returns it. It has no idea what's inside.
+  </Card>
+  <Card title="What stays on your machine">
+    `#aB3xK9mP...`
+
+    The encryption key. It never leaves the client. Decryption happens locally after the ciphertext is downloaded.
+  </Card>
+</Cards>
+
+## What the server stores
+
+The server is a simple blob store. It receives and stores:
+
+- An opaque **ciphertext** string (encrypted, unreadable)
+- A **download counter** and **expiry timestamp**
+
+<Callout type="warn" title="What the server does NOT have">
+  The server never receives the encryption key, the plaintext `.env` contents, file paths, variable names, or any metadata about what is being shared. Even if the server is compromised, your secrets are safe.
+</Callout>
+
+## Ephemeral by design
+
+Shares are designed to be short-lived:
+
+| Property | Default | Maximum |
+|----------|---------|---------|
+| TTL (time to live) | 15 minutes | 1 hour |
+| Max downloads | 1 | 10 |
+
+- Shares are **deleted immediately** after the last download
+- Expired shares are cleaned up automatically
+- There is no way to recover a share after it is consumed or expired
+
+## Manifest format
+
+All `.env` files are bundled into a single JSON manifest before encryption:
+
+```json
+{
+  "version": 1,
+  "files": [
+    { "path": ".env", "content": "DB_URL=..." },
+    { "path": "apps/web/.env", "content": "NEXT_PUBLIC_URL=..." }
+  ]
+}
+```
+
+<Callout type="info">
+  The entire manifest is encrypted as **one blob**. The server cannot see how many files are being shared, what paths they have, or how many variables exist.
+</Callout>

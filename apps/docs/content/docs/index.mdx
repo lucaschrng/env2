@@ -1,0 +1,89 @@
+---
+title: Introduction
+description: Ephemeral encrypted .env sharing. Zero-knowledge by design.
+icon: BookOpen
+---
+
+env2 is an open-source CLI tool for sharing `.env` files between teammates. One command to share, one command to receive. Secrets are encrypted on your machine and the server never sees them.
+
+## How it works
+
+<Steps>
+  <Step>
+    ### Share
+
+    Run `env2 share` in your project. It scans for `.env` files and lets you pick which files and variables to include.
+
+    ```bash
+    env2 share
+    ```
+  </Step>
+  <Step>
+    ### Encrypt
+
+    The CLI encrypts all selected files into a single blob using **AES-256-GCM** with a random key. The ciphertext is uploaded to the server.
+  </Step>
+  <Step>
+    ### Get a URL
+
+    You get a URL like this:
+
+    ```
+    https://env2.dev/s/abc123#aB3xK9mP...
+    ```
+
+    The encryption key is in the **URL fragment** (`#...`) — it never leaves your machine.
+  </Step>
+  <Step>
+    ### Receive
+
+    Your teammate runs `env2 receive` with the URL. The CLI fetches the ciphertext, decrypts it locally, and writes the `.env` files.
+
+    ```bash
+    env2 receive https://env2.dev/s/abc123#aB3xK9mP...
+    ```
+  </Step>
+  <Step>
+    ### Auto-delete
+
+    The server deletes the blob after download. One-time use, with a configurable TTL (default: 15 minutes).
+  </Step>
+</Steps>
+
+<Callout type="info" title="Zero-knowledge by design">
+  The encryption key lives in the URL fragment (`#...`). Per the HTTP spec, fragments are **never sent to the server**. The server only stores encrypted blobs it cannot read.
+</Callout>
+
+## Install
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">
+    ```bash
+    npm i -g @griv/env2
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm add -g @griv/env2
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn global add @griv/env2
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bun add -g @griv/env2
+    ```
+  </Tab>
+</Tabs>
+
+## Next steps
+
+<Cards>
+  <Card title="Quick Start" description="Share your first .env file in 30 seconds" href="/docs/quickstart" />
+  <Card title="CLI Reference" description="All commands and flags" href="/docs/cli" />
+  <Card title="Self-Hosting" description="Run your own server with Docker" href="/docs/self-hosting" />
+  <Card title="Security" description="How env2 keeps your secrets safe" href="/docs/security" />
+</Cards>

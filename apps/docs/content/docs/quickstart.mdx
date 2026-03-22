@@ -1,0 +1,92 @@
+---
+title: Quick Start
+description: Share your first .env file in 30 seconds.
+icon: Zap
+---
+
+<Steps>
+  <Step>
+    ### Install
+
+    <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+      <Tab value="npm">
+        ```bash
+        npm i -g @griv/env2
+        ```
+      </Tab>
+      <Tab value="pnpm">
+        ```bash
+        pnpm add -g @griv/env2
+        ```
+      </Tab>
+      <Tab value="yarn">
+        ```bash
+        yarn global add @griv/env2
+        ```
+      </Tab>
+      <Tab value="bun">
+        ```bash
+        bun add -g @griv/env2
+        ```
+      </Tab>
+    </Tabs>
+  </Step>
+  <Step>
+    ### Share
+
+    Run `env2 share` in your project directory. It scans for `.env` files, lets you pick which files and variables to include, encrypts everything, and gives you a URL.
+
+    ```bash
+    env2 share
+    ```
+
+    ```
+    ◆ Select files to share
+    │ ✓ .env                (12 vars)
+    │ ✓ apps/web/.env       (8 vars)
+    │ ✓ apps/api/.env       (3 vars)
+    │
+    ◆ .env (12 vars)
+    │ ✓ DATABASE_URL
+    │ ✓ DATABASE_POOL_SIZE
+    │ ✓ REDIS_URL
+    │
+    ◇ Encrypting and uploading...
+    ✔ Encrypted 3 file(s) — expires 15min, 1 download(s)
+    │ https://env2.dev/s/abc123#aB3xK9mP...
+    │
+    ◇ Copy URL to clipboard?
+    └ Copied! Share it with your teammate.
+    ```
+  </Step>
+  <Step>
+    ### Receive
+
+    Your teammate runs `env2 receive` with the URL you shared.
+
+    ```bash
+    env2 receive https://env2.dev/s/abc123#key
+    ```
+
+    ```
+    ◇ Fetching...
+    ◆ Decrypted 3 file(s).
+    │
+    ◆ .env (12 vars)
+    │ ✓ DATABASE_URL
+    │ ✓ DATABASE_POOL_SIZE
+    │ ✓ REDIS_URL
+    │
+    │ .env          ⚠ merge (file exists)
+    │ apps/web/.env ← new
+    │ apps/api/.env ← new
+    │
+    ◇ Proceed?
+    └ Wrote 3 file(s).
+    ```
+  </Step>
+</Steps>
+
+<Callout type="info" title="Merge behavior">
+  When a `.env` file already exists, env2 **merges** instead of replacing. Your local variables are preserved, shared variables are added or updated. Use `--overwrite` to replace files entirely.
+</Callout>

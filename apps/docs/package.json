@@ -1,0 +1,41 @@
+{
+  "name": "@env2/docs",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "start": "next start",
+    "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
+    "postinstall": "fumadocs-mdx",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy"
+  },
+  "dependencies": {
+    "@opennextjs/cloudflare": "^1.17.1",
+    "@takumi-rs/image-response": "^0.73.1",
+    "fumadocs-core": "16.7.4",
+    "fumadocs-mdx": "14.2.11",
+    "fumadocs-ui": "16.7.4",
+    "lucide-react": "^0.577.0",
+    "next": "16.1.7",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "tailwind-merge": "^3.5.0"
+  },
+  "devDependencies": {
+    "@next/eslint-plugin-next": "^16.1.7",
+    "@tailwindcss/postcss": "^4.2.2",
+    "@types/mdx": "^2.0.13",
+    "@types/node": "^25.5.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^10.1.0",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.2.2",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.76.0"
+  }
+}
