@@ -155,12 +155,6 @@ importers:
       '@clack/prompts':
         specifier: ^0.10
         version: 0.10.1
-      '@env2/crypto':
-        specifier: workspace:*
-        version: link:../crypto
-      '@env2/types':
-        specifier: workspace:*
-        version: link:../types
       clipboardy:
         specifier: ^5.3.1
         version: 5.3.1
@@ -168,6 +162,9 @@ importers:
         specifier: ^13
         version: 13.1.0
     devDependencies:
+      '@env2/types':
+        specifier: workspace:*
+        version: link:../types
       '@types/node':
         specifier: ^22
         version: 22.19.15

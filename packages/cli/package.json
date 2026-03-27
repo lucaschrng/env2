@@ -1,6 +1,6 @@
 {
   "name": "@griv/env2",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Ephemeral encrypted .env sharing",
   "type": "module",
   "license": "MIT",
@@ -23,12 +23,11 @@
   },
   "dependencies": {
     "@clack/prompts": "^0.10",
-    "@env2/crypto": "workspace:*",
-    "@env2/types": "workspace:*",
     "clipboardy": "^5.3.1",
     "commander": "^13"
   },
   "devDependencies": {
+    "@env2/types": "workspace:*",
     "@types/node": "^22",
     "tsup": "^8.5.1",
     "typescript": "^5"
