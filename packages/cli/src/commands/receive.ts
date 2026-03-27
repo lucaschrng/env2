@@ -6,6 +6,7 @@ import { dirname, join, resolve } from 'node:path';
 
 import { decryptManifest } from '../lib/crypto';
 import { type EnvGroup, mergeEnvContent, parseEnvContent, serializeEnvGroups } from '../lib/env-parser';
+import { checkExampleSync } from '../lib/example-sync';
 
 interface ReceiveOptions {
   dryRun: boolean;
@@ -62,6 +63,10 @@ export async function receive(url: string, options: ReceiveOptions): Promise<voi
   }
 
   s.stop(`Decrypted ${manifest.files.length} file(s).`);
+
+  if (!options.noInteractive && !options.stdout) {
+    await checkExampleSync(root);
+  }
 
   // Build selections per file
   const fileSelections: { content: string; groups: EnvGroup[]; path: string; selectedKeys: Set<string> }[] = [];

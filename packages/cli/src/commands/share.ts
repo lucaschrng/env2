@@ -8,6 +8,7 @@ import { join, resolve } from 'node:path';
 import { getConfig } from '../lib/config';
 import { encryptManifest } from '../lib/crypto';
 import { type EnvGroup, parseEnvContent, serializeEnvGroups } from '../lib/env-parser';
+import { checkExampleSync } from '../lib/example-sync';
 import { scanEnvFiles } from '../lib/scanner';
 
 interface ShareOptions {
@@ -23,6 +24,10 @@ export async function share(options: ShareOptions): Promise<void> {
   const host = options.host || getConfig().host;
 
   p.intro('env2 share');
+
+  if (!options.noInteractive) {
+    await checkExampleSync(root);
+  }
 
   const files = scanEnvFiles(root);
 

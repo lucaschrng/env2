@@ -7,14 +7,43 @@ interface ScannedFile {
 }
 
 export function scanEnvFiles(root: string): ScannedFile[] {
-  const gitignorePatterns = loadGitignore(root);
   const results: ScannedFile[] = [];
 
-  function walk(dir: string): void {
-    const entries = readdirSync(dir, { withFileTypes: true });
+  walkDir(root, root, (relPath, fullPath, name) => {
+    if (isEnvFile(name)) {
+      const content = readFileSync(fullPath, 'utf-8');
+      const varCount = countVars(content);
+      results.push({ path: relPath, varCount });
+    }
+  });
+
+  return results.sort((a, b) => a.path.localeCompare(b.path));
+}
+
+export function scanExampleFiles(root: string): string[] {
+  const results: string[] = [];
+
+  walkDir(root, root, (relPath, _fullPath, name) => {
+    if (name === '.env.example') {
+      results.push(relPath);
+    }
+  });
+
+  return results.sort((a, b) => a.localeCompare(b));
+}
+
+export function walkDir(
+  root: string,
+  dir: string,
+  callback: (relPath: string, fullPath: string, name: string) => void,
+): void {
+  const gitignorePatterns = loadGitignore(root);
+
+  function walk(currentDir: string): void {
+    const entries = readdirSync(currentDir, { withFileTypes: true });
 
     for (const entry of entries) {
-      const fullPath = join(dir, entry.name);
+      const fullPath = join(currentDir, entry.name);
       const relPath = relative(root, fullPath);
 
       if (entry.name === 'node_modules' || entry.name === '.git' || entry.name === '.turbo') {
@@ -28,16 +57,13 @@ export function scanEnvFiles(root: string): ScannedFile[] {
       if (entry.isDirectory()) {
         walk(fullPath);
       }
-      else if (isEnvFile(entry.name)) {
-        const content = readFileSync(fullPath, 'utf-8');
-        const varCount = countVars(content);
-        results.push({ path: relPath, varCount });
+      else {
+        callback(relPath, fullPath, entry.name);
       }
     }
   }
 
-  walk(root);
-  return results.sort((a, b) => a.path.localeCompare(b.path));
+  walk(dir);
 }
 
 function countVars(content: string): number {
